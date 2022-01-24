@@ -2,7 +2,11 @@ import webpack from 'webpack';
 
 const mapsKey = process.env.MAPS_KEY
   ? process.env.MAPS_KEY
-  : 'AIzaSyCE5_1vSXIap5MmYA4qWwHPQRpyDckvfVU';
+  : 'AIzaSyBCau3ch7SSkscqQUl2El4ux9Au1Ur9jFo';
+
+// const mapsKey = (process.env.MAPS_KEY) ? process.env.MAPS_KEY : 'AIzaSyCE5_1vSXIap5MmYA4qWwHPQRpyDckvfVU';
+
+console.log("mapsKey",mapsKey)
 
 export default {
   mode: 'universal',
@@ -20,7 +24,7 @@ export default {
         src: `https://maps.googleapis.com/maps/api/js?key=${mapsKey}&libraries=places`,
         async: true,
         defer: true
-      }
+      } 
     ],
     meta: [
       { charset: 'utf-8' },
@@ -49,15 +53,15 @@ export default {
       {
         rel: 'preload',
         href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
+          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700%7CRoboto:300,300i,400,400i,500,700&display=swap',
         as: 'style'
       },
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
+          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700%7CRoboto:300,300i,400,400i,500,700&display=swap',
         media: 'print',
-        onload: 'this.media=\'all\'',
+        onload: "this.media='all'",
         once: true
       }
     ],
@@ -172,7 +176,7 @@ export default {
       } else {
         return { x: 0, y: 0 };
       }
-    }
-    // middleware : 'auth'
+    },
+    middleware: ['auth']
   }
 };

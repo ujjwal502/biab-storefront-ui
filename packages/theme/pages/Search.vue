@@ -1,5 +1,132 @@
 <template>
   <div class="search-page">
+    <ModalCategory v-if="openCategoryModel" @close="onApplyFilter">
+      <div slot="body">
+        <div>
+          <div class="model-category-headers">Category :</div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="groceries"
+              name="category"
+              value="groceries"
+              @click="setCategoryValue"
+            />
+            <label for="groceries" class="model-category-childs"
+              >Groceries</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="electronics"
+              name="category"
+              value="electronics"
+              @click="setCategoryValue"
+            />
+            <label for="electronics" class="model-category-childs"
+              >Electronics & Electrical Gadgets</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="food"
+              name="category"
+              value="food"
+              @click="setCategoryValue"
+            />
+            <label for="food" class="model-category-childs"
+              >Food & Beverages</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="lifestyle"
+              name="category"
+              value="lifestyle"
+              @click="setCategoryValue"
+            />
+            <label for="lifestyle" class="model-category-childs"
+              >Lifestyle & Beauty Products</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="pantry"
+              name="category"
+              value="pantry"
+              @click="setCategoryValue"
+            />
+            <label for="pantry" class="model-category-childs">Pantry</label
+            ><br />
+          </div>
+        </div>
+        <div class="m-10">
+          <div class="model-category-headers">Fullfilment Type :</div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="home"
+              name="fullfilment"
+              value="home"
+              @click="setFullfilmentValue"
+            />
+            <label for="home" class="model-category-childs">Home Delivery</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="pickup"
+              name="fullfilment"
+              value="pickup"
+              @click="setFullfilmentValue"
+            />
+            <label for="pickup" class="model-category-childs">Pickup</label
+            ><br />
+          </div>
+        </div>
+        <div class="m-10">
+          <div class="model-category-headers">Payment Type :</div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="cod"
+              name="payment"
+              value="cod"
+              @click="setPaymentTypeValue"
+            />
+            <label for="cod" class="model-category-childs"
+              >Cash On Delivery (C.O.D)</label
+            ><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="upi"
+              name="payment"
+              value="upi"
+              @click="setPaymentTypeValue"
+            />
+            <label for="upi" class="model-category-childs">UPI</label><br />
+          </div>
+          <div class="model-category-headers-div">
+            <input
+              type="radio"
+              id="card"
+              name="payment"
+              value="card"
+              @click="setPaymentTypeValue"
+            />
+            <label for="card" class="model-category-childs">Credit Card</label
+            ><br />
+          </div>
+        </div>
+      </div>
+    </ModalCategory>
     <div class="search-bar side-padding searchBy-search-bar">
       <SfSearchBar
         :placeholder="searchByPlaceholderMapper[selectedSearchByOption]"
@@ -15,7 +142,7 @@
             :class="{
               'dropdown-button': true,
               'dropdown-disabled':
-                !selectedLocation.latitude || !selectedLocation.longitude,
+                !selectedLocation.latitude || !selectedLocation.longitude
             }"
             @click="onDropdownHeaderClick"
           >
@@ -27,29 +154,42 @@
             />
             <SfIcon icon="chevron_down" size="xxs" />
           </div>
-          <SfButton
-            v-if="searchKey"
-            class="sf-search-bar__button sf-button--pure"
-            @click="clearSearch"
-          >
-            <span class="sf-search-bar__icon">
-              <SfIcon color="var(--c-text)" size="20px" icon="cross" />
-            </span>
-          </SfButton>
-          <SfButton
-            v-else
-            class="sf-search-bar__button sf-button--pure"
-            @click="
-              isSearchOpen ? (isSearchOpen = false) : (isSearchOpen = true)
-            "
-          >
-            <span class="sf-search-bar__icon">
-              <SfIcon color="var(--c-text)" size="20px" icon="search" />
-            </span>
-          </SfButton>
+          <div>
+            <SfButton
+              v-if="searchKey"
+              class="sf-search-bar__button sf-button--pure"
+              @click="clearSearch"
+            >
+              <span class="sf-search-bar__icon sf-icon-adjust">
+                <SfIcon color="var(--c-text)" size="20px" icon="cross" />
+              </span>
+            </SfButton>
+
+            <SfButton
+              v-else
+              class="sf-search-bar__button sf-button--pure"
+              @click="
+                isSearchOpen ? (isSearchOpen = false) : (isSearchOpen = true)
+              "
+            >
+              <span class="sf-search-bar__icon sf-icon-adjust">
+                <SfIcon size="xxs" icon="search" />
+              </span>
+            </SfButton>
+          </div>
+
+          <div>
+            <SfButton
+              class="sf-search-bar__button sf-button--pure sf-button-width"
+              @click="onFilterHandle"
+            >
+              <span class="sf-icon-filter">
+                <SfIcon size="md" icon="filter2" />
+              </span>
+            </SfButton>
+          </div>
         </template>
       </SfSearchBar>
-
       <div class="dowpdown" v-if="openSearchByDropdown">
         <div
           class="dowpdown-item"
@@ -82,7 +222,7 @@
                 found</span
               >
             </div>
-            <div class="price-sort-toggler" @click="sortByPriceToggler">
+            <div class="price-sort-toggler" @click="openSortByDropdown">
               <!-- TO DO :- complete this icon after having a discussion with the designer -->
               <svg
                 width="10"
@@ -97,6 +237,18 @@
                 />
               </svg>
             </div>
+
+            <div class="sort-dowpdown" v-if="showSortByDropdown">
+              <div
+                class="sort-dowpdown-item"
+                v-for="(sortBy, key, index) in sortByMapper"
+                :key="key"
+                @click="onSelectSortDropdownItem(key)"
+                :class="{ border: index !== Object.keys(searchByMapper) - 1 }"
+              >
+                {{ sortBy }}
+              </div>
+            </div>
           </div>
           <div v-for="(bpp, bppIndex) in pollResults" :key="bppIndex">
             <div
@@ -107,13 +259,13 @@
                 v-for="(product, pIndex) in sortItemsByPrice(provider.items)"
                 :key="
                   bppIndex +
-                  '-' +
-                  prIndex +
-                  '-' +
-                  pIndex +
-                  '-' +
-                  keyVal +
-                  'product'
+                    '-' +
+                    prIndex +
+                    '-' +
+                    pIndex +
+                    '-' +
+                    keyVal +
+                    'product'
                 "
                 class="results--mobile"
               >
@@ -170,6 +322,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { SfIcon, SfSearchBar, SfButton, SfImage } from '@storefront-ui/vue';
 import { ref, onBeforeMount, watch, computed } from '@vue/composition-api';
@@ -178,13 +331,14 @@ import ProductCard from '~/components/ProductCard';
 import Footer from '~/components/Footer';
 import { useUiState } from '~/composables';
 import debounce from 'lodash.debounce';
+import ModalCategory from '~/components/ModelCategory';
 import {
   productGetters,
   providerGetters,
   cartGetters,
   useCart,
   useFacet,
-  useSearch,
+  useSearch
 } from '@vue-storefront/beckn';
 
 export default {
@@ -197,6 +351,7 @@ export default {
     ProductCard,
     Footer,
     SfImage,
+    ModalCategory
   },
   setup(_, context) {
     const {
@@ -204,7 +359,7 @@ export default {
       changeSearchString,
       selectedLocation,
       toggleLoadindBar,
-      clearCartPopup,
+      clearCartPopup
     } = useUiState();
     const goBack = () => {
       context.root.$router.back();
@@ -219,20 +374,31 @@ export default {
     const { search, result } = useFacet();
     const { pollResults, poll, polling, stopPolling } = useSearch('search');
     const noSearchFound = ref(false);
-
+    const openCategoryModel = ref(false);
+    const categoryValue = ref('');
+    const fullfilmentValue = ref('');
+    const paymentTypeValue = ref('');
     const openSearchByDropdown = ref(false);
+    const showSortByDropdown = ref(false);
     const selectedSearchByOption = ref(
       context.root.$route.params.searchBy || 'search-by-all'
     );
     const searchByMapper = {
       'search-by-all': 'All',
       'search-by-seller': 'Search by Seller',
-      'search-by-category': 'Search by Category',
+      'search-by-category': 'Search by Category'
     };
     const searchByPlaceholderMapper = {
       'search-by-all': 'Search for Items',
       'search-by-seller': "Enter Seller's Name",
-      'search-by-category': 'Enter Category Name',
+      'search-by-category': 'Enter Category Name'
+    };
+
+    const sortByMapper = {
+      'sort-items-by-popularity': 'Popularity',
+      'sort-ttems-by-price': 'Price',
+      'sort-items-by-relevance': 'Relevance',
+      'sort-items-by-distance': 'Distance'
     };
 
     console.log(cart);
@@ -258,7 +424,7 @@ export default {
           selectedLocation?.value?.latitude +
           ',' +
           selectedLocation?.value?.longitude,
-        searchBy: selectedSearchByOption.value,
+        searchBy: selectedSearchByOption.value
         // eslint-disable-next-line no-unused-vars
       }).then((_) => {
         localStorage.setItem(
@@ -268,7 +434,7 @@ export default {
 
         poll({
           // eslint-disable-next-line camelcase
-          message_id: result.value.data.ackResponse.context.message_id,
+          message_id: result.value.data.ackResponse.context.message_id
         });
       });
 
@@ -380,20 +546,20 @@ export default {
           product,
           bpp: {
             id: bpp.bpp_id,
-            descriptor: bpp.bpp_descriptor,
+            descriptor: bpp.bpp_descriptor
           },
           bppProvider: {
             id: provider.id,
-            descriptor: provider.descriptor,
+            descriptor: provider.descriptor
           },
-          locations: provider.locations,
+          locations: provider.locations
         })
       );
       context.root.$router.push({
         path: '/product',
         query: {
-          data: data,
-        },
+          data: data
+        }
       });
     };
 
@@ -404,14 +570,14 @@ export default {
         customQuery: {
           bpp: {
             id: bpp.bpp_id,
-            descriptor: bpp.bpp_descriptor,
+            descriptor: bpp.bpp_descriptor
           },
           bppProvider: {
             id: provider.id,
-            descriptor: provider.descriptor,
+            descriptor: provider.descriptor
           },
-          locations: provider.locations,
-        },
+          locations: provider.locations
+        }
       });
     };
 
@@ -426,6 +592,39 @@ export default {
       openSearchByDropdown.value = false;
     };
 
+    const onFilterHandle = () => {
+      openCategoryModel.value = !openCategoryModel.value;
+      console.log(openCategoryModel.value);
+    };
+
+    const setCategoryValue = (event) => {
+      console.log('Categairy Value: ', event.target.value);
+      categoryValue.value = event.target.value;
+    };
+
+    const setFullfilmentValue = (event) => {
+      console.log('Fullfilment Value: ', event.target.value);
+      fullfilmentValue.value = event.target.value;
+    };
+
+    const setPaymentTypeValue = (event) => {
+      console.log('Payment Value: ', event.target.value);
+      paymentTypeValue.value = event.target.value;
+    };
+
+    const onApplyFilter = () => {
+      openCategoryModel.value = !openCategoryModel.value;
+      return openCategoryModel;
+    };
+
+    const openSortByDropdown = () => {
+      showSortByDropdown.value = !showSortByDropdown.value;
+    };
+
+    const onSelectSortDropdownItem = (key) => {
+      console.log('Key Value: ', key);
+      showSortByDropdown.value = !showSortByDropdown.value;
+    };
     return {
       goBack,
       enableLoader,
@@ -434,6 +633,8 @@ export default {
       cartGetters,
       searchKey,
       keyVal,
+      openCategoryModel,
+      showSortByDropdown,
       noSearchFound,
       cart,
       pollResults,
@@ -446,6 +647,7 @@ export default {
       footerClick,
       totalResults,
       goToProduct,
+      sortByMapper,
       sortByPriceToggler,
       sortItemsByPrice,
       isSortAscending,
@@ -456,8 +658,15 @@ export default {
       onSelectDropdownItem,
       searchByMapper,
       searchByPlaceholderMapper,
+      onFilterHandle,
+      setCategoryValue,
+      setPaymentTypeValue,
+      setFullfilmentValue,
+      onApplyFilter,
+      openSortByDropdown,
+      onSelectSortDropdownItem
     };
-  },
+  }
 };
 </script>
 
@@ -510,6 +719,31 @@ export default {
   }
 }
 
+.sort-dowpdown {
+  background: #ffffff;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 0 7px;
+  position: absolute;
+  top: 210px;
+  width: 130px;
+  left: 240px;
+  z-index: 1;
+  .sort-dowpdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+  .border {
+    border-bottom: 1px solid rgba(226, 226, 226, 0.7);
+  }
+  .color-text {
+    color: #f37a20;
+    cursor: pointer;
+  }
+}
+
 .search-by-icon {
   padding-right: 20px;
   padding-left: 8px;
@@ -523,8 +757,56 @@ export default {
     --icon-color: #e0e0e1 !important;
   }
 }
+.sf-icon-filter {
+  .sf-icon {
+    --icon-size: 28px !important;
+  }
+}
+
+.sf-icon-adjust {
+  margin-right: 30px !important;
+}
+
+// .sf-button-width{
+//   --icon-width: 30px !important
+// }
 
 .search-bar {
   position: relative;
+}
+
+.radio-button {
+  border: 1px solid #000000;
+}
+
+// input[type='radio']:after {
+//   background-color: #ffa500;
+// }
+[type='radio']:checked:after {
+  background-color: #ffa500;
+}
+
+.model-category-headers {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  padding-bottom: 10px;
+  color: #37474f;
+}
+
+.model-category-headers-div {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.model-category-childs {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  margin-left: 8px;
+}
+.m-10 {
+  margin-top: 15px;
 }
 </style>
