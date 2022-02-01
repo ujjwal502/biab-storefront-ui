@@ -9,8 +9,8 @@
           :height="90"
         />
       </div>
-      <div @click="$emit('goToProduct')" class="s-p-details">
-        <div>
+      <div class="s-p-details">
+        <div @click="$emit('goToProduct')">
           <div class="s-p-name">{{ _pName }}</div>
           <div class="s-p-retailer">
             Sold by {{ _pProviderName }},
@@ -18,6 +18,7 @@
           </div>
         </div>
         <!-- <div class="s-p-weight">{{ _pWieght }}</div>    -->
+        <div class="price-and-heart">
         <div
           class="price-increase"
           v-if="!!_updatedPrice && _updatedPrice !== _pPrice"
@@ -28,6 +29,8 @@
           ₹{{ _updatedPrice ? _updatedPrice : _pPrice }}
         </div>
         <span class="out-stock" v-if="_updatedCount === 0">Out of Stock</span>
+        <SfIcon icon="heart"/>
+        </div>
       </div>
       <SfImage
         v-if="deleteCard"
@@ -36,6 +39,7 @@
         @click="$emit('deleteItem')"
         class="delete-icon"
       />
+      <SfIcon icon="more" />
       <div class="s-p-add-cart">
         <AddToCart
           v-if="!dropdownCouner"
@@ -201,5 +205,15 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.price-and-heart {
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+}
+
+.heart {
+  margin-left: 40px;
 }
 </style>

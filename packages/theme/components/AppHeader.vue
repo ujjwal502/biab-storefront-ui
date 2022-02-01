@@ -30,6 +30,9 @@
             <nuxt-link :to="localePath('/')"> My Address </nuxt-link>
             <div><hr class="sf-divider" /></div>
             <!-- TO DO -->
+            <nuxt-link :to="localePath('/favourites')"> My Favourites </nuxt-link>
+            <div><hr class="sf-divider" /></div>
+            <!-- TO DO -->
             <nuxt-link :to="localePath('/')">Support</nuxt-link>
             <div><hr class="sf-divider" /></div>
             <!-- TO DO -->
