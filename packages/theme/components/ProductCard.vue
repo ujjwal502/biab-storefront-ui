@@ -241,16 +241,17 @@ export default {
 }
 
 .verify-button {
-  line-height: 38px;
+  line-height: 24px;
   padding-left: 40px;
+  position: relative;
 }
 .image-verify {
   margin-bottom: 4px;
 }
 
-/* Tooltip text */
 .tooltiptext {
   display: none;
+  width: 90px;
   background-color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -259,7 +260,6 @@ export default {
   font-size: 10px;
   font-weight: bold;
   border: 1px solid #888;
-  /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
 }
